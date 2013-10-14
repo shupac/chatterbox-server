@@ -3,6 +3,7 @@
  * basic-server.js.  So you must figure out how to export the function
  * from this file and include it in basic-server.js. Check out the
  * node module documentation at http://nodejs.org/api/modules.html. */
+var _storage = [];
 
 var handleRequest = function(request, response) {
   console.log("Serving request type " + request.method + " for url " + request.url);
@@ -12,7 +13,7 @@ var handleRequest = function(request, response) {
     "access-control-allow-origin": "*",
     "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
     "access-control-allow-headers": "content-type, accept",
-    "access-control-max-age": 10 
+    "access-control-max-age": 10
   };
 
   var headers = defaultCorsHeaders;
@@ -20,9 +21,44 @@ var handleRequest = function(request, response) {
   headers['Content-Type'] = "text/plain";
 
   response.writeHead(statusCode, headers);
-  var responseJSON = {"results":[{"username":"anonymous","text":"Hi, I'm Emma","roomname":"lobby","createdAt":"2013-10-14T22:21:34.714Z","updatedAt":"2013-10-14T22:21:34.714Z","objectId":"vE6uIJezqp"}]};
+
+  if (request.method === 'POST') {
+    // _storage.push()
+    var requestBody = '';
+    request.on('data', function(data) {
+      // console.log(data);
+      requestBody += data;
+      console.log(requestBody);
+    });
+    // request.on('end', function() {
+    //   var formData = qs.parse(requestBody);
+    //   response.writeHead(201, {'Content-Type': 'text/html'});
+    //   response.write('<!doctype html><html><head><title>response</title></head><body>');
+    //   response.write('Thanks for the data!<br />User Name: '+formData.UserName);
+    //   response.write('<br />Repository Name: '+formData.Repository);
+    //   response.write('<br />Branch: '+formData.Branch);
+    //   response.end('</body></html>');
+    // });
+  } else if (request.method === 'GET'){
+
+  }
+
+
+
+
 
   response.end(JSON.stringify(responseJSON));
 };
 
 exports.handleRequest = handleRequest;
+
+
+
+
+
+
+
+
+
+
+  var responseJSON = {response: _storage}; // GET
