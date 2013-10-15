@@ -2,7 +2,6 @@ var http = require("http");
 var url = require('url');
 var requestHandler = require("./request-handler.js");
 
-
 // var port = process.env.port || 8080;
 // var ip = process.env.IP || "127.0.0.1";
 
@@ -12,16 +11,19 @@ var server = http.createServer( function(req, res) {
 
   switch(route) {
     case 'classes/messages':
-      hander = requestHandler.handleRequest;
+      handler = requestHandler.handleRequest;
+      break;
+    case '/':
+      handler = requestHandler.handleRequest;
       break;
     default:
-      hander = requestHandler.handleRequest;
+      // handler = requestHandler.handleRequest;
       break;
   }
-
-  handler.call();
-  handler.listen(process.env.PORT || 5000);
+  handler.call(req, res);
 });
+
+server.listen(process.env.PORT || 5000);
 
 
 
