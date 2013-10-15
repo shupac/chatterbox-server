@@ -43,7 +43,7 @@ var handleRequest = function(request, response) {
   };
 
   var returnFail = function(){
-    response.writeHeader(404);
+    response.writeHead(404);
     response.end();
   };
 
@@ -55,7 +55,7 @@ var handleRequest = function(request, response) {
 
   if (route === ''){
     fs.readFile('../client/index.html', function (err, html) {
-      response.writeHeader(200, {"Content-Type": "text/html"});
+      response.writeHead(200, {"Content-Type": "text/html"});
       response.write(html);
       response.end();
     });
