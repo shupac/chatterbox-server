@@ -1,5 +1,5 @@
 // YOUR CODE HERE:
-var useURL = 'http://127.0.0.1:8080/1/classes/messages';
+var useURL = 'http://127.0.0.1:8080/classes/room1';
 
 var chatUser = window.location.search.split('=')[1];
 var _msgResults;
@@ -20,8 +20,8 @@ var sendChat = function() {
     url : useURL,
     type : 'POST',
     data : stringified,
-    contentType : 'application/json',
     success : function() {
+      console.log('post success');
       scrollPosition = undefined;
       retrieve();
     }
@@ -38,9 +38,10 @@ var retrieve = function(room) {
       limit: 200
     },
     success : function(data) {
-      console.log('success');
+      console.log('get success');
       data = JSON.parse(data);
-      _msgResults = data.results;
+      _msgResults = data;
+      console.log(data);
       displayByRoom(filter);
       buildChatRooms();
     }
@@ -133,7 +134,7 @@ var escapeString = function(string, data) {
 
 $(document).ready(function() {
   retrieve();
-  setInterval(retrieve, 10000);
+  setInterval(retrieve, 2000);
 
   $('.msgInput').on('keypress', function(event) {
     if (event.which === 13 && $('.msgInput').val() !== '') {

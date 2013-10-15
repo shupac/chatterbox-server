@@ -5,9 +5,17 @@
  * node module documentation at http://nodejs.org/api/modules.html. */
 var _storage = [];
 
+var messageExtend = function(to){
+  to["createdAt"] = new Date();
+  return to;
+};
+
+
 var handleRequest = function(request, response) {
   console.log("Serving request type " + request.method + " for url " + request.url);
-  var statusCode = 200;
+  var getCode = 200;
+  var postCode = 201;
+  var failCode = 404;
 
   var defaultCorsHeaders = {
     "access-control-allow-origin": "*",
@@ -20,34 +28,29 @@ var handleRequest = function(request, response) {
 
   headers['Content-Type'] = "text/plain";
 
-  response.writeHead(statusCode, headers);
-
-  if (request.method === 'POST') {
-    // _storage.push()
-    var requestBody = '';
-    request.on('data', function(data) {
-      // console.log(data);
-      requestBody += data;
-      console.log(requestBody);
-    });
-    // request.on('end', function() {
-    //   var formData = qs.parse(requestBody);
-    //   response.writeHead(201, {'Content-Type': 'text/html'});
-    //   response.write('<!doctype html><html><head><title>response</title></head><body>');
-    //   response.write('Thanks for the data!<br />User Name: '+formData.UserName);
-    //   response.write('<br />Repository Name: '+formData.Repository);
-    //   response.write('<br />Branch: '+formData.Branch);
-    //   response.end('</body></html>');
-    // });
-  } else if (request.method === 'GET'){
-
+  if (request.url.split('/')[1] !== 'classes') {
+    console.log(request.url.split('/')[1]);
+    response.writeHead(failCode, headers);
+    response.end();
+  } else {
+    console.log(request.url.split('/')[1]);
+    if (request.method === 'POST') {
+      var requestBody = '';
+      request.on('data', function(data) {
+        requestBody += data;
+        var messageObj = JSON.parse(requestBody);
+        _storage.push(messageExtend(messageObj));
+        response.writeHead(postCode, headers);
+        var responseJSON = {response: "success"};
+        response.end(JSON.stringify(responseJSON));
+      });
+    } else if (request.method === 'GET'){
+      var responseJSON = _storage; // GET
+      response.writeHead(getCode, headers);
+      response.end(JSON.stringify(responseJSON));
+    }
   }
 
-
-
-
-
-  response.end(JSON.stringify(responseJSON));
 };
 
 exports.handleRequest = handleRequest;
@@ -61,4 +64,3 @@ exports.handleRequest = handleRequest;
 
 
 
-  var responseJSON = {response: _storage}; // GET
