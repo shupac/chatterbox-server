@@ -17,7 +17,7 @@ var server = http.createServer( function(req, res) {
       handler = requestHandler.handleRequest;
       break;
     default:
-      // handler = requestHandler.handleRequest;
+      handler = requestHandler.handleRequest;
       break;
   }
   handler.call(req, res);
