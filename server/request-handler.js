@@ -54,10 +54,14 @@ var handleRequest = function(request, response) {
   var route = parsedRequest.pathname.split('/')[1];
 
   if (route === ''){
-    fs.readFile('../client/index.html', function (err, html) {
-      response.writeHead(200, {"Content-Type": "text/html"});
-      response.write(html);
-      response.end();
+    fs.readFile('client/index.html', function (err, html) {
+      if(err) {
+        throw err;
+      } else {
+        response.writeHead(200, {"Content-Type": "text/html"});
+        response.write(html);
+        response.end();
+      }
     });
   } else if (route === 'classes') {
     if (request.method === 'POST') {
@@ -78,7 +82,7 @@ var handleRequest = function(request, response) {
       returnFail();
     }
   } else {
-    var filepath = '../client' + request.url;
+    var filepath = 'client' + request.url;
     var fileext = path.extname(filepath);
     path.exists(filepath, function (file) {
       if (file) {
