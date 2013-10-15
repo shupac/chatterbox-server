@@ -21,7 +21,6 @@ var sendChat = function() {
     type : 'POST',
     data : stringified,
     success : function() {
-      console.log('post success');
       scrollPosition = undefined;
       retrieve();
     }
@@ -38,10 +37,8 @@ var retrieve = function(room) {
       limit: 200
     },
     success : function(data) {
-      console.log('get success');
       data = JSON.parse(data);
       _msgResults = data;
-      console.log(data);
       displayByRoom(filter);
       buildChatRooms();
     }
