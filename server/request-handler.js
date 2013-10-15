@@ -1,15 +1,9 @@
-/* You should implement your request handler function in this file.
- * But you need to pass the function to http.createServer() in
- * basic-server.js.  So you must figure out how to export the function
- * from this file and include it in basic-server.js. Check out the
- * node module documentation at http://nodejs.org/api/modules.html. */
 var _storage = [];
 
 var messageExtend = function(to){
   to["createdAt"] = new Date();
   return to;
 };
-
 
 var handleRequest = function(request, response) {
   console.log("Serving request type " + request.method + " for url " + request.url);
@@ -24,14 +18,48 @@ var handleRequest = function(request, response) {
     "access-control-max-age": 10
   };
 
+  var fs = require('fs');
+  var path = require('path');
+
+  var contentType = function(ext) {
+    var ct;
+
+    switch (ext) {
+    case '.html':
+        ct = 'text/html';
+        break;
+    case '.css':
+        ct = 'text/css';
+        break;
+    case '.js':
+        ct = 'text/javascript';
+        break;
+    default:
+        ct = 'text/plain';
+        break;
+    }
+
+    return {'Content-Type': ct};
+  };
+
+  var returnFail = function(){
+    response.writeHeader(404);
+    response.end();
+  };
+
   var headers = defaultCorsHeaders;
 
   headers['Content-Type'] = "text/plain";
-  var parseRequest = require('url').parse(request.url);
-  if (parseRequest.path.split('/')[1] !== 'classes') {
-    response.writeHead(failCode, headers);
-    response.end();
-  } else {
+  var parsedRequest = require('url').parse(request.url);
+  var route = parsedRequest.pathname.split('/')[1];
+
+  if (route === ''){
+    fs.readFile('../client/index.html', function (err, html) {
+      response.writeHeader(200, {"Content-Type": "text/html"});
+      response.write(html);
+      response.end();
+    });
+  } else if (route === 'classes') {
     if (request.method === 'POST') {
       var requestBody = '';
       request.on('data', function(data) {
@@ -46,19 +74,27 @@ var handleRequest = function(request, response) {
       var responseJSON = _storage; // GET
       response.writeHead(getCode, headers);
       response.end(JSON.stringify(responseJSON));
+    } else {
+      returnFail();
     }
+  } else {
+    var filepath = '../client' + request.url;
+    var fileext = path.extname(filepath);
+    path.exists(filepath, function (file) {
+      if (file) {
+        fs.readFile(filepath, function (err, content) {
+          if (err) {
+            returnFail();
+          } else {
+            response.writeHead(200, contentType(fileext));
+            response.end(content);
+          }
+        });
+      } else {
+        returnFail();
+      }
+    });
   }
-
 };
 
 exports.handleRequest = handleRequest;
-
-
-
-
-
-
-
-
-
-
