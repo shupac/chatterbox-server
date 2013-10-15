@@ -1,5 +1,6 @@
 /* Import node's http module: */
 var http = require("http");
+var fs = require('fs');
 var requestHandler = require("./request-handler.js");
 
 /* These headers will allow Cross-Origin Resource Sharing.
@@ -14,6 +15,11 @@ var requestHandler = require("./request-handler.js");
  * user processes, so we'll use a higher port number that is not
  * likely to be taken: */
 var port = 8080;
+
+// Use the FS to open index.html
+// 
+// provide a 200 code
+// serve up the html as the response
 
 /* For now, since you're running this server on your local machine,
  * we'll have it listen on the IP address 127.0.0.1, which is a

@@ -27,7 +27,6 @@ var handleRequest = function(request, response) {
   var headers = defaultCorsHeaders;
 
   headers['Content-Type'] = "text/plain";
-  console.log(request.url);
   var parseRequest = require('url').parse(request.url);
   if (parseRequest.path.split('/')[1] !== 'classes') {
     response.writeHead(failCode, headers);
