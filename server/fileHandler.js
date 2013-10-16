@@ -26,7 +26,7 @@ var contentType = function(ext) {
 exports.handleRequest = function(request, response) {
   var route = url.parse(request.url).pathname;
   if (route === '/'){
-    fs.readFile('../client/index.html', function (err, html) {
+    fs.readFile('client/index.html', function (err, html) {
       if(err) {
         throw err;
       } else {
@@ -36,7 +36,7 @@ exports.handleRequest = function(request, response) {
       }
     });
   } else {
-    var filepath = '../client' + request.url;
+    var filepath = 'client' + request.url;
     var fileext = path.extname(filepath);
     path.exists(filepath, function (file) {
       if (file) {
