@@ -13,10 +13,6 @@ var server = http.createServer(function(req, res){
       requestHandler.handleRequest(req, res);
       break;
 
-    case "classes/messages":
-      requestHandler.handleRequest(req, res);
-      break;
-
     case "/classes/rooms":
       roomHandler.handleRequest(req, res);
       break;
