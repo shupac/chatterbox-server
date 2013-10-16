@@ -1,5 +1,5 @@
 // YOUR CODE HERE:
-var useURL = 'classes/messages';
+var useURL = '/classes/messages';
 
 var chatUser = window.location.search.split('=')[1];
 var _msgResults;
