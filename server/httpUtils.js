@@ -8,7 +8,7 @@ var headers = {
 exports.sendResponse = function(response, obj, status) {
   status = status || 200;
   response.writeHead(status, headers);
-  response.writeHead({"Content-Type":"application/json"});
+  // response.writeHead({"Content-Type":"application/json"});
   response.end(JSON.stringify(obj));
   return;
 };
