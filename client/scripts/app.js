@@ -10,10 +10,14 @@ var scrollPosition;
 
 
 var sendChat = function(user, text, room) {
+  user = user || chatUser;
+  text = text || $('.msgInput').val();
+  room = room || filter;
   var msg = {
+
     // "username": chatUser,
     // "text": $('.msgInput').val(),
-    // 'roomname': 'garage'
+    // 'roomname': 'lobby'
     "username": user,
     "text": text,
     'roomname': room
@@ -134,7 +138,7 @@ var escapeString = function(string, data) {
 
 $(document).ready(function() {
   retrieve();
-  // setInterval(retrieve, 10000);
+  // setInterval(retrieve, 2000);
 
   $('.msgInput').on('keypress', function(event) {
     if (event.which === 13 && $('.msgInput').val() !== '') {
