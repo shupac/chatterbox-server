@@ -9,17 +9,21 @@ var friends = {};
 var scrollPosition;
 
 
-var sendChat = function() {
+var sendChat = function(user, text, room) {
   var msg = {
-    "username": chatUser,
-    "text": $('.msgInput').val(),
-    'roomname': filter
+    // "username": chatUser,
+    // "text": $('.msgInput').val(),
+    // 'roomname': 'garage'
+    "username": user,
+    "text": text,
+    'roomname': room
   };
   var stringified = JSON.stringify(msg);
   $.ajax({
     url : useURL,
     type : 'POST',
     data : stringified,
+    contentType: "application/json",
     success : function() {
       scrollPosition = undefined;
       retrieve();
@@ -37,8 +41,7 @@ var retrieve = function(room) {
       limit: 200
     },
     success : function(data) {
-      data = JSON.parse(data);
-      _msgResults = data;
+      _msgResults = JSON.parse(data);
       displayByRoom(filter);
       buildChatRooms();
     }
@@ -131,7 +134,7 @@ var escapeString = function(string, data) {
 
 $(document).ready(function() {
   retrieve();
-  setInterval(retrieve, 2000);
+  // setInterval(retrieve, 10000);
 
   $('.msgInput').on('keypress', function(event) {
     if (event.which === 13 && $('.msgInput').val() !== '') {
@@ -139,4 +142,14 @@ $(document).ready(function() {
     }
   });
 
+
+  sendChat('shu', 'hello', 'lobby');
+  sendChat('shu', 'world', 'lounge');
+  sendChat('shu', 'testing', 'club');
+  sendChat('joe', 'microphone', 'lobby');
+  sendChat('joe', 'speakers', 'lounge');
+  sendChat('joe', 'cables', 'club');
+  sendChat('jill', 'books', 'lobby');
+  sendChat('jill', 'puppies', 'lounge');
+  sendChat('jill', 'brunch', 'club');
 });

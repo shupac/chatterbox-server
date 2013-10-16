@@ -1,6 +1,7 @@
 exports.sendResponse = function(response, obj, status) {
   status = status || 200;
-  response.writeHead(status, {"Content-type":"application/json"});
+  response.writeHead(status);
+  response.writeHead({"Content-Type":"application/json"});
   response.end(JSON.stringify(obj));
   return;
 };
