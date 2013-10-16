@@ -1,5 +1,5 @@
 // YOUR CODE HERE:
-var useURL = '/classes/messages';
+var useURL = 'classes/messages';
 
 var chatUser = window.location.search.split('=')[1];
 var _msgResults;
@@ -40,10 +40,10 @@ var retrieve = function(room) {
   $.ajax({
     url : useURL,
     type : 'GET',
-    data : {
-      order: "-createdAt",
-      limit: 200
-    },
+    // data : {
+    //   order: "-createdAt",
+    //   limit: 200
+    // },
     success : function(data) {
       _msgResults = JSON.parse(data);
       displayByRoom(filter);
