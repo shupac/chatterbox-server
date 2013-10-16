@@ -27,7 +27,6 @@ var sendChat = function(user, text, room) {
     url : useURL,
     type : 'POST',
     data : stringified,
-    // contentType: "application/json",
     success : function() {
       scrollPosition = undefined;
       retrieve();
